@@ -40,6 +40,18 @@ public class MainController {
         return "beatmaker";
     }
 
+    @GetMapping("/playgen")
+    public String playgen() {
+        logger.info("User accessed the playgen page");
+        return "playgen";
+    }
+
+    @GetMapping("/videoeditor")
+    public String videoeditor() {
+        logger.info("User accessed the video editor page");
+        return "videoeditor";
+    }
+
     @GetMapping("/data")
     public ResponseEntity<String> getData() {
         logger.info("User accessed the data page");
