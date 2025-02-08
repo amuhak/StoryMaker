@@ -1,7 +1,10 @@
 package prizehoggers.songmaker.Controller;
 
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@Configuration
+@EnableScheduling
 @RestController
 @RequestMapping("/queue")
 public class QueueController {
@@ -46,13 +51,42 @@ public class QueueController {
     }
 
     @PostMapping("/remove-first")
-    public ResponseEntity<String> removeFirstUser(@RequestParam String password) {
+    public ResponseEntity<String> removeFirstUser(@RequestParam String password, @RequestParam String word) {
         synchronized (userQueue) {
             if (userQueue.isEmpty() || !userQueue.getFirst().equals(password)) {
                 return ResponseEntity.badRequest().body("You are not the first user in the queue");
             }
             String removedUser = userQueue.removeFirst();
+            word = word.trim();
+            // make sure word is valid (less than 100 characters), no spaces
+            if (word.length() > 100 || word.contains(" ")) {
+                return ResponseEntity.badRequest().body("Invalid word");
+            }
+            SongMakerApplication.gameManager.addWord(word);
             return ResponseEntity.ok("Removed user: " + removedUser);
         }
     }
+
+    @PostMapping("/leave")
+    public ResponseEntity<String> leave(@RequestParam String password) {
+        logger.info("User {} is leaving the queue", password);
+        synchronized (userQueue) {
+            if (userQueue.remove(password)) {
+                return ResponseEntity.ok("Removed user: " + password);
+            } else {
+                return ResponseEntity.badRequest().body("User not found in queue");
+            }
+        }
+    }
+
+    @Scheduled(fixedRate = 10000)
+    public void removeOverdueUsers() {
+        synchronized (userQueue) {
+            if (SongMakerApplication.gameManager.overdue()) {
+                logger.info("Removing overdue users from the queue");
+                userQueue.removeFirst();
+            }
+        }
+    }
+
 }
