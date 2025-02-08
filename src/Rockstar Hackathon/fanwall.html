@@ -1,4 +1,11 @@
-/* style.css */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fan Wall</title>
+    <style>
+        /* style.css */
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap");
 
@@ -456,4 +463,210 @@ color: var(--dl-color-theme-secondary2);
 border-color: var(--dl-color-theme-primary2);
 background-color: var(--dl-color-theme-primary2);
 }
+    </style>
+</head>
+<body>
+    <header>
+        <navbar8-wrapper class="navbar8-wrapper">
+            <!--Navbar8 component-->
+            <header class="navbar8-container1">
+              <header data-thq="thq-navbar" class="navbar8-navbar-interactive">
+                <img
+                  alt="Rockstar Logo"
+                  src="images/HackathonLogo.jpeg"
+                  class="navbar8-image1"
+                />
+                <div data-thq="thq-navbar-nav" class="navbar8-desktop-menu">
+                  <nav class="navbar8-links1">
+                    <a
+                      href="index.html"
+                      class="navbar8-link11 thq-body-small thq-link"
+                    >
+                      <fragment class="home-fragment100">
+                        <span class="home-text100">#home</span>
+                      </fragment>
+                    </a>
+                    <a
+                      href="fanwall.html"
+                      class="thq-body-small thq-link"
+                    >
+                      <fragment class="home-fragment101">
+                        <span class="home-text100">#fanwall</span>
+                      </fragment>
+                    </a>
+                    <a
+                      href="beatmaker.html"
+                      rel="noreferrer noopener"
+                      class="navbar8-link31 thq-body-small thq-link"
+                    >
+                      <fragment class="home-fragment102">
+                        <span class="home-text100">#beatmaker</span>
+                      </fragment>
+                    </a>
+                    <div class="navbar8-link4-dropdown-trigger">
+                      <span class="thq-body-small thq-link">
+                        <fragment class="home-fragment103">
+                            <a href="playlistgen.html"><span class="home-text103">#playlistgen</span></a>
+                        </fragment>
+                      </span>
+                      <div class="navbar8-icon-container1">
+                        <div class="navbar8-container2">
+  
+                        </div>
+                      </div>
+                    </div>
+                  </nav>
+                  <div class="navbar8-buttons1">
+                    <button
+                      class="navbar8-action11 thq-button-filled thq-button-animated"
+                    >
+                      <span>
+                        <fragment class="home-fragment108">
+                          <span class="home-text108">Sign Up</span>
+                        </fragment>
+                      </span>
+                    </button>
+                    <button
+                      class="navbar8-action21 thq-button-outline thq-button-animated"
+                    >
+                      <span>
+                        <fragment class="home-fragment109">
+                          <span class="home-text109">Log In</span>
+                        </fragment>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </header>
+            </header>
+          </navbar8-wrapper>
+    </header>
 
+    <section id="fan-wall">
+        <div class="container">
+            <h2>Fan Wall</h2>
+            <div id="fan-posts">
+                </div>
+
+            <div id="new-post-form">
+                <h3>Share Your Rockstar Moment</h3>
+                <textarea id="post-text" placeholder="Write your post here..."></textarea>
+                <input type="file" id="post-image" accept="image/*">
+                <button onclick="addFanPost()">Post to Fan Wall</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // script.js
+
+async function addFanPost() {
+    const postText = document.getElementById('post-text').value.trim();
+    const postImageFile = document.getElementById('post-image').files[0]; // Get the first file from the list
+    const fanPostsContainer = document.getElementById('fan-posts');
+
+    if (!postText) {
+        alert("Please enter some text for your post.");
+        return;
+    }
+
+    // Function to convert image file to Data URL (for local storage)
+    function toDataURL(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Function to create and display a fan post element
+    function createFanPostElement(post) {
+        const postDiv = document.createElement('div');
+        postDiv.classList.add('fan-post');
+
+        const postHeader = document.createElement('div');
+        postHeader.classList.add('post-header');
+        const authorSpan = document.createElement('span');
+        authorSpan.classList.add('post-author');
+        authorSpan.textContent = "Rockstar Fan"; // Replace with actual username if user accounts are implemented
+        const dateSpan = document.createElement('span');
+        dateSpan.classList.add('post-date');
+        dateSpan.textContent = new Date(post.date).toLocaleDateString() + ' ' + new Date(post.date).toLocaleTimeString();
+        postHeader.appendChild(authorSpan);
+        postHeader.appendChild(dateSpan);
+        postDiv.appendChild(postHeader);
+
+        const postContent = document.createElement('div');
+        postContent.classList.add('post-content');
+        const textParagraph = document.createElement('p');
+        textParagraph.textContent = post.text;
+        postContent.appendChild(textParagraph);
+        postDiv.appendChild(postContent);
+
+        if (post.image) { // If there's image data in the post
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('post-image-container');
+            const imageElement = document.createElement('img');
+            imageElement.src = post.image; // Use the data URL directly
+            imageContainer.appendChild(imageElement);
+            postDiv.appendChild(imageContainer);
+        }
+        return postDiv;
+    }
+
+    // Function to load posts from local storage on page load
+    function loadFanPostsFromStorage() {
+        const savedPostsJSON = localStorage.getItem('fanPosts');
+        if (savedPostsJSON) {
+            const savedPosts = JSON.parse(savedPostsJSON);
+            savedPosts.forEach(post => {
+                const postElement = createFanPostElement(post);
+                fanPostsContainer.appendChild(postElement); // Append to display in correct order
+            });
+        }
+    }
+
+    let postImageDataURL = null;
+    if (postImageFile) {
+        postImageDataURL = await toDataURL(postImageFile); // Convert image to data URL
+    }
+
+    const newPost = {
+        text: postText,
+        image: postImageDataURL, // Store data URL, can be null if no image
+        date: new Date().toISOString() // Store date as ISO string
+    };
+
+    // Get existing posts from local storage
+    let savedPosts = JSON.parse(localStorage.getItem('fanPosts')) || [];
+
+    savedPosts.unshift(newPost); // Add new post to the beginning of the array
+
+    // Limit number of saved posts (optional, for demo purposes)
+    if (savedPosts.length > 5) {
+        savedPosts = savedPosts.slice(0, 5); // Keep only latest 5
+    }
+
+    localStorage.setItem('fanPosts', JSON.stringify(savedPosts)); // Save back to local storage
+
+    // Create and prepend the post element to the UI
+    const postElement = createFanPostElement(newPost);
+    fanPostsContainer.prepend(postElement);
+
+    // Clear the form
+    document.getElementById('post-text').value = '';
+    document.getElementById('post-image').value = ''; // Reset file input
+}
+
+// Load saved posts when the script runs (page loads)
+loadFanPostsFromStorage();
+
+// Add event listener for the "Post to Fan Wall" button (assuming you have this button in your HTML)
+document.getElementById('post-button').addEventListener('click', addFanPost);
+
+localStorage.setItem('testKey', 'testValue');
+console.log("Test value from local storage: ", localStorage.getItem('testKey'));
+    </script>
+</body>
+</html>
