@@ -28,7 +28,7 @@ public class PlayListGen {
     private static final ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials().build();
 
 
-    public static void getPlayList(String genre) {
+    public static List<PlaylistSimplified> getPlayList(String genre) {
         List<PlaylistSimplified> ans = new ArrayList<>();
         try {
             ans = Arrays.stream(spotifyApi.searchPlaylists(genre).build().execute().getItems())
@@ -37,6 +37,8 @@ public class PlayListGen {
         } catch (Exception e) {
             logger.error("Error: {}", e.getMessage());
         }
+        return ans;
+        /*
         for (var playlist : ans) {
             System.out.println(Arrays.toString(playlist.getImages()));
             System.out.println("Playlist Name: " + playlist.getName());
@@ -44,6 +46,7 @@ public class PlayListGen {
             System.out.println("Playlist URL: " + playlist.getExternalUrls().get("spotify"));
             System.out.println("---");
         }
+*/
     }
 
     @Scheduled(fixedRate = 1000 * 60 * 50) // 50 minutes
