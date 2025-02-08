@@ -20,7 +20,7 @@ import java.util.Map;
 @Configuration
 @EnableScheduling
 @RestController
-@RequestMapping("/queue")
+@RequestMapping("songmaker/queue")
 public class QueueController {
     public final Logger logger = org.slf4j.LoggerFactory.getLogger(QueueController.class);
     private final List<String> userQueue = Collections.synchronizedList(new LinkedList<>());
