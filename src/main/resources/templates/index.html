@@ -1,1 +1,94 @@
-hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Queue Position: <span id="position">Not in queue</span></h2>
+    <button id="joinButton" class="button">Join Queue</button>
+    <button id="leaveButton" class="button" style="display: none;">Leave Queue</button>
+</div>
+
+<script>
+    let password = null;
+    let positionCheckInterval = null;
+
+    function checkPosition() {
+        if (!password) return;
+
+        fetch(`/queue/get-position?password=${password}`)
+            .then(response => response.json())
+            .then(position => {
+                document.getElementById('position').textContent = position;
+                document.getElementById('leaveButton').style.display =
+                    position === 0 ? 'inline-block' : 'none';
+            })
+            .catch(() => {
+                // If there's an error, assume we're not in queue
+                password = null;
+                clearInterval(positionCheckInterval);
+                document.getElementById('position').textContent = 'Not in queue';
+                document.getElementById('joinButton').style.display = 'inline-block';
+                document.getElementById('leaveButton').style.display = 'none';
+            });
+    }
+
+    document.getElementById('joinButton').addEventListener('click', () => {
+        fetch('/queue/join', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                password = data.Password;
+                document.getElementById('joinButton').style.display = 'none';
+
+                // Start checking position every second
+                positionCheckInterval = setInterval(checkPosition, 1000);
+                checkPosition(); // Check immediately
+            });
+    });
+
+    document.getElementById('leaveButton').addEventListener('click', () => {
+        fetch(`/queue/remove-first?password=${password}`, { method: 'POST' })
+            .then(() => {
+                password = null;
+                clearInterval(positionCheckInterval);
+                document.getElementById('position').textContent = 'Not in queue';
+                document.getElementById('joinButton').style.display = 'inline-block';
+                document.getElementById('leaveButton').style.display = 'none';
+            });
+    });
+</script>
+</body>
+</html>
