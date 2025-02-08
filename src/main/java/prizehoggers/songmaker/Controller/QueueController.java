@@ -72,6 +72,7 @@ public class QueueController {
         logger.info("User {} is leaving the queue", password);
         synchronized (userQueue) {
             if (userQueue.remove(password)) {
+                SongMakerApplication.gameManager.timeReset();
                 return ResponseEntity.ok("Removed user: " + password);
             } else {
                 return ResponseEntity.badRequest().body("User not found in queue");
@@ -82,7 +83,11 @@ public class QueueController {
     @Scheduled(fixedRate = 10000)
     public void removeOverdueUsers() {
         synchronized (userQueue) {
+            if (userQueue.isEmpty()) {
+                return;
+            }
             if (SongMakerApplication.gameManager.overdue()) {
+                SongMakerApplication.gameManager.timeReset();
                 logger.info("Removing overdue users from the queue");
                 userQueue.removeFirst();
             }

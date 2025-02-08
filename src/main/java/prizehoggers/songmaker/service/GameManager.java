@@ -10,10 +10,14 @@ public class GameManager {
 
     public void addWord(String word) {
         words.append(word).append(" ");
-        lastUpdate = System.currentTimeMillis() / 1000;
+        timeReset();
     }
 
     public boolean overdue() {
         return (System.currentTimeMillis() / 1000) - lastUpdate > 10;
+    }
+
+    public void timeReset() {
+        lastUpdate = System.currentTimeMillis() / 1000;
     }
 }
