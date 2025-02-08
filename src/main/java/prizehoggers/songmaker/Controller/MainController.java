@@ -40,10 +40,10 @@ public class MainController {
         return "beatmaker";
     }
 
-    @GetMapping("/playgen")
+    @GetMapping("/playlistgen")
     public String playgen() {
-        logger.info("User accessed the playgen page");
-        return "playgen";
+        logger.info("User accessed the playlistgen page");
+        return "playlistgen";
     }
 
     @GetMapping("/videoeditor")
