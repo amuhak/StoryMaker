@@ -19,7 +19,7 @@ public class MainController {
     @GetMapping("/songmaker")
     public String index() {
         logger.info("User accessed the songmaker page");
-        return "combLear";
+        return "songmaker";
     }
 
     @GetMapping("/fanwall")

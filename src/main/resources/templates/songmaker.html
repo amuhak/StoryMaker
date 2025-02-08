@@ -471,7 +471,7 @@ background-color: var(--dl-color-theme-primary2);
             <div data-thq="thq-navbar-nav" class="navbar8-desktop-menu">
               <nav class="navbar8-links1">
                 <a
-                  href="index"
+                  href="/"
                   class="navbar8-link11 thq-body-small thq-link"
                 >
                   <fragment class="home-fragment100">
@@ -510,7 +510,7 @@ background-color: var(--dl-color-theme-primary2);
                 <div class="navbar8-link4-dropdown-trigger">
                     <span class="thq-body-small thq-link">
                       <fragment class="home-fragment103">
-                        <a href="combLear"><span class="home-text103">#songmaker</span></a>
+                        <a href="songmaker"><span class="home-text103">#songmaker</span></a>
                       </fragment>
                     </span>
                     <div class="navbar8-icon-container1">
@@ -598,7 +598,7 @@ background-color: var(--dl-color-theme-primary2);
 
         async joinQueue() {
             try {
-                const response = await fetch('/queue/join', { method: 'POST' });
+                const response = await fetch('/songmaker/queue/join', { method: 'POST' });
                 const data = await response.json();
                 this.password = data.Password;
                 this.elements.joinButton.classList.add('hidden');
@@ -610,7 +610,7 @@ background-color: var(--dl-color-theme-primary2);
 
         async leaveQueue() {
             try {
-                await fetch(`/queue/remove-first?password=${this.password}`, { method: 'POST' });
+                await fetch(`/songmaker/queue/remove-first?password=${this.password}`, { method: 'POST' });
                 this.resetQueueState();
             } catch (error) {
                 console.error('Failed to leave queue:', error);
@@ -620,7 +620,7 @@ background-color: var(--dl-color-theme-primary2);
         async submitWord() {
             const word = this.elements.wordInput.value;
             try {
-                await fetch(`/queue/remove-first?password=${this.password}&word=${word}`, {
+                await fetch(`/songmaker/queue/remove-first?password=${this.password}&word=${word}`, {
                     method: 'POST'
                 });
                 this.resetQueueState();
@@ -634,7 +634,7 @@ background-color: var(--dl-color-theme-primary2);
             if (!this.password) return;
 
             try {
-                const response = await fetch(`/queue/get-position?password=${this.password}`);
+                const response = await fetch(`/songmaker/queue/get-position?password=${this.password}`);
                 const position = await response.json();
                 this.updateUI(position);
             } catch (error) {
@@ -703,7 +703,7 @@ background-color: var(--dl-color-theme-primary2);
         async handleBeforeUnload() {
             console.log('User is leaving the page, removing from queue if necessary.');
             if (this.password) {
-                await fetch(`/queue/leave?password=${this.password}`, { method: 'POST' });
+                await fetch(`/songmaker/queue/leave?password=${this.password}`, { method: 'POST' });
             }
         }
     }
