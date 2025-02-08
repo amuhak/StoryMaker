@@ -1,90 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Queue System</title>
-    <style>
-        :root {
-            --primary-color: #007bff;
-            --primary-hover: #0056b3;
-            --background-color: #f0f2f5;
-            --container-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            --spacing-unit: 0.5rem;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Queue System</title>
+<style>
 
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: var(--background-color);
-        }
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap");
 
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&amp;display=swap");
+
+:root {
+    --dl-size-size-large: 144px;
+    --dl-size-size-small: 48px;
+    --dl-size-size-medium: 96px;
+    --dl-size-size-xlarge: 192px;
+    --dl-size-size-xsmall: 16px;
+    --dl-space-space-unit: 16px;
+    --dl-size-size-xxlarge: 288px;
+    --dl-size-size-maxwidth: 1400px;
+    --dl-color-theme-accent1: #FFFFFF;
+    --dl-color-theme-accent2: #F5D1B0;
+    --dl-radius-radius-round: 50%;
+    --dl-color-theme-primary1: #BF4408;
+    --dl-color-theme-primary2: #E65103;
+    --dl-space-space-halfunit: 8px;
+    --dl-space-space-sixunits: 96px;
+    --dl-space-space-twounits: 32px;
+    --dl-radius-radius-radius2: 2px;
+    --dl-radius-radius-radius4: 4px;
+    --dl-radius-radius-radius8: 8px;
+    --dl-space-space-fiveunits: 80px;
+    --dl-space-space-fourunits: 64px;
+    --dl-color-theme-secondary1: #FFFFFF;
+    --dl-color-theme-secondary2: #FBF1EB;
+    --dl-space-space-threeunits: 48px;
+    --dl-color-theme-neutral-dark: #191818;
+    --dl-radius-radius-cardradius: 8px;
+    --dl-color-theme-neutral-light: #FBFAF9;
+    --dl-radius-radius-imageradius: 8px;
+    --dl-radius-radius-inputradius: 24px;
+    --dl-radius-radius-buttonradius: 24px;
+    --dl-space-space-oneandhalfunits: 24px;
+    --primary-bg: #f9f4ef;
+    --text-dark: #4d4d4d;
+    --button-bg: #e5d5c5;
+    --container-bg: #ffffff;
+    --input-bg: #ffffff;
+    --border-radius: 28px;
+  }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+        background-color: var(--primary-bg);
+        color: var(--text-dark);
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background-color: var(--primary-bg);
+    }
+
+    .logo img {
+        height: 40px;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: var(--text-dark);
+        margin-right: 30px;
+        font-size: 1.1em;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 40px;
+        display: flex;
+        flex-direction: row;
+        border-radius: var(--border-radius);
+        background-color: var(--container-bg);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        align-items: stretch;
+        min-height: 600px;
+    }
+
+    .left-column {
+        width: 60%;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--container-bg);
+    }
+
+    .game-history {
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 40px;
+        box-sizing: border-box;
+    }
+
+    .game-history h3 {
+        font-size: 2.2em;
+        margin-bottom: 25px;
+        color: var(--text-dark);
+        font-weight: 600;
+    }
+
+    #gameHistory {
+        color: #777;
+        font-size: 1.2em;
+        line-height: 1.7;
+        white-space: pre-line;
+    }
+
+    .right-column {
+        width: 40%;
+        padding: 40px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-left: 1px solid #e0e0e0;
+        box-sizing: border-box;
+        background-color: var(--container-bg);
+    }
+
+    .queue-controls {
+        width: 100%;
+        max-width: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    h2 {
+        font-size: 3em;
+        color: var(--text-dark);
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .description {
+        font-size: 1.3em;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .word-input {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.1em;
+        margin-bottom: 15px;
+        border-radius: calc(var(--border-radius) * 0.75);
+        border: 1px solid #d0d0d0;
+        box-sizing: border-box;
+        background-color: var(--input-bg);
+        color: var(--text-dark);
+    }
+
+    .word-input::placeholder {
+        color: #999;
+    }
+
+    .word-input:focus {
+        outline: none;
+        border-color: #d0d0d0;
+    }
+
+    .button {
+        width: 100%;
+        background-color: var(--button-bg);
+        color: var(--text-dark);
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.1em;
+        border-radius: calc(var(--border-radius) * 0.75);
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        font-weight: 500;
+        box-sizing: border-box;
+    }
+
+    .button:hover {
+        background-color: #dac7b5;
+    }
+
+    #joinButton {
+        background-color: var(--button-bg);
+        margin-bottom: 15px;
+    }
+
+    #wordInputContainer {
+        width: 100%;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .auth-buttons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .sign-up {
+        background-color: #b85c38;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        text-decoration: none;
+    }
+
+    .log-in {
+        border: 2px solid #b85c38;
+        color: #b85c38;
+        padding: 12px 30px;
+        border-radius: 25px;
+        text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
         .container {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: var(--container-shadow);
-            text-align: center;
-            max-width: 600px;
-            width: 90%;
+            flex-direction: column;
+            padding: 20px;
+            margin: 20px;
+            min-height: 800px;
         }
-
-        .button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: var(--spacing-unit);
-            transition: background-color 0.2s ease;
+        .left-column, .right-column {
+            width: 100%;
+            padding: 20px;
+            border-left: none;
         }
-
-        .button:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .word-input {
-            padding: 0.5rem;
-            margin: var(--spacing-unit);
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 200px;
-        }
-
         .game-history {
-            margin-top: 2rem;
-            padding: 1rem;
-            border-top: 1px solid #eee;
+            padding: 20px;
         }
+        h2 {
+            font-size: 2.8em;
+        }
+        .description {
+            font-size: 1.1em;
+        }
+        .queue-controls {
+            max-width: 100%;
+            padding: 0 20px;
+        }
+        .word-input, .button {
+            padding: 12px;
+            font-size: 1em;
+        }
+    }
 
-        .hidden {
-            display: none;
-        }
-    </style>
+
+.navbar8-wrapper {
+    display: contents;
+  }
+
+.navbar8-container1 {
+    top: 0;
+    width: 100%;
+    display: flex;
+    z-index: 1000;
+    position: sticky;
+    justify-content: center;
+    background-color: var(--dl-color-theme-neutral-light);
+}
+
+.navbar8-navbar-interactive {
+    width: 100%;
+    display: flex;
+    z-index: 100;
+    max-width: var(--dl-size-size-maxwidth);
+    align-items: center;
+    padding-top: var(--dl-space-space-oneandhalfunits);
+    padding-left: var(--dl-space-space-threeunits);
+    padding-right: var(--dl-space-space-threeunits);
+    padding-bottom: var(--dl-space-space-oneandhalfunits);
+    justify-content: space-between;
+  }
+
+.navbar8-desktop-menu {
+flex: 1;
+display: flex;
+justify-content: space-between;
+}
+
+.navbar8-links1 {
+    gap: var(--dl-space-space-twounits);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin-left: var(--dl-space-space-twounits);
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+.navbar8-image1 {
+height: 3rem;
+}
+
+.navbar8-link11 {
+text-decoration: none;
+}
+
+.thq-body-small {
+font-size: 16px;
+font-family: Noto Sans;
+line-height: 1.5;
+}
+
+.thq-link {
+cursor: pointer;
+display: inline-block;
+overflow: hidden;
+background: linear-gradient(to right, var(--dl-color-theme-primary1) 50%, var(--dl-color-theme-neutral-dark) 50%);
+transition: background-position 300ms ease;
+font-weight: 600;
+background-clip: text;
+background-size: 200% 100%;
+background-position: 100%;
+-webkit-text-fill-color: transparent;
+}
+
+.thq-link:hover {
+background-position: 0 100%;
+}
+
+.home-text100 {
+display: inline-block;
+}
+
+.navbar8-link31 {
+text-decoration: none;
+}
+
+.navbar8-link4-dropdown-trigger {
+    gap: 4px;
+    cursor: pointer;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+.navbar8-buttons1 {
+gap: var(--dl-space-space-twounits);
+display: flex;
+align-items: center;
+flex-direction: row;
+}
+
+.thq-button-filled {
+gap: var(--dl-space-space-halfunit);
+fill: var(--dl-color-theme-secondary1);
+color: var(--dl-color-theme-secondary1);
+cursor: pointer;
+display: flex;
+transition: 0.3s;
+align-items: center;
+font-weight: bold;
+padding-top: var(--dl-space-space-halfunit);
+white-space: nowrap;
+border-color: var(--dl-color-theme-primary1);
+border-width: 1px;
+padding-left: var(--dl-space-space-oneandhalfunits);
+border-radius: var(--dl-radius-radius-buttonradius);
+padding-right: var(--dl-space-space-oneandhalfunits);
+padding-bottom: var(--dl-space-space-halfunit);
+justify-content: center;
+background-color: var(--dl-color-theme-primary1);
+}
+
+.thq-button-filled:hover {
+fill: var(--dl-color-theme-secondary2);
+color: var(--dl-color-theme-secondary2);
+border-color: var(--dl-color-theme-primary2);
+background-color: var(--dl-color-theme-primary2);
+}
+
+.thq-button-animated:before {
+top: 0;
+left: -20%;
+color: var(--dl-color-theme-neutral-light);
+width: 200%;
+height: 101%;
+content: "";
+z-index: 1;
+position: absolute;
+transform: scaleX(0);
+transition: transform 0.5s;
+border-radius: var(--dl-radius-radius-buttonradius);
+background-color: var(--dl-color-theme-neutral-dark);
+transform-origin: 0 0;
+transition-timing-function: cubic-bezier(0.5, 1.6, 0.4, 0.7);
+}
+
+.thq-button-animated:hover::before {
+color: var(--dl-color-theme-neutral-light);
+z-index: -1;
+transform: scaleX(1);
+}
+
+.thq-button-animated {
+outline: none;
+z-index: 1;
+overflow: hidden;
+position: relative;
+border-width: 2px;
+}
+
+.thq-button-outline {
+gap: var(--dl-space-space-halfunit);
+fill: var(--dl-color-theme-primary1);
+color: var(--dl-color-theme-primary1);
+border: 1px solid;
+cursor: pointer;
+display: flex;
+transition: 0.3s;
+align-items: center;
+font-weight: bold;
+padding-top: var(--dl-space-space-halfunit);
+white-space: nowrap;
+border-color: var(--dl-color-theme-primary1);
+padding-left: 30px;
+border-radius: var(--dl-radius-radius-buttonradius);
+padding-right: 30px;
+padding-bottom: var(--dl-space-space-halfunit);
+justify-content: center;
+}
+
+.thq-button-outline:hover {
+fill: var(--dl-color-theme-secondary2);
+color: var(--dl-color-theme-secondary2);
+border-color: var(--dl-color-theme-primary2);
+background-color: var(--dl-color-theme-primary2);
+}
+</style>
 </head>
 <body>
+    <navbar8-wrapper class="navbar8-wrapper">
+        <!--Navbar8 component-->
+        <header class="navbar8-container1">
+          <header data-thq="thq-navbar" class="navbar8-navbar-interactive">
+            <img
+              alt="Rockstar Logo"
+              src="images/HackathonLogo.jpeg"
+              class="navbar8-image1"
+            />
+            <div data-thq="thq-navbar-nav" class="navbar8-desktop-menu">
+              <nav class="navbar8-links1">
+                <a
+                  href="index"
+                  class="navbar8-link11 thq-body-small thq-link"
+                >
+                  <fragment class="home-fragment100">
+                    <span class="home-text100">#home</span>
+                  </fragment>
+                </a>
+                <a
+                  href="fanwall"
+                  class="thq-body-small thq-link"
+                >
+                  <fragment class="home-fragment101">
+                    <span class="home-text100">#fanwall</span>
+                  </fragment>
+                </a>
+                <a
+                  href="beatmaker"
+                  rel="noreferrer noopener"
+                  class="navbar8-link31 thq-body-small thq-link"
+                >
+                  <fragment class="home-fragment102">
+                    <span class="home-text100">#beatmaker</span>
+                  </fragment>
+                </a>
+                <div class="navbar8-link4-dropdown-trigger">
+                  <span class="thq-body-small thq-link">
+                    <fragment class="home-fragment103">
+                        <a href="playlistgen"><span class="home-text103">#playlistgen</span></a>
+                    </fragment>
+                  </span>
+                  <div class="navbar8-icon-container1">
+                    <div class="navbar8-container2">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="navbar8-link4-dropdown-trigger">
+                    <span class="thq-body-small thq-link">
+                      <fragment class="home-fragment103">
+                        <a href="combLear"><span class="home-text103">#songmaker</span></a>
+                      </fragment>
+                    </span>
+                    <div class="navbar8-icon-container1">
+                      <div class="navbar8-container2">
+  
+                      </div>
+                    </div>
+                  </div>
+              </nav>
+              <div class="navbar8-buttons1">
+                <button
+                  class="navbar8-action11 thq-button-filled thq-button-animated"
+                >
+                  <span>
+                    <fragment class="home-fragment108">
+                      <span class="home-text108">Sign Up</span>
+                    </fragment>
+                  </span>
+                </button>
+                <button
+                  class="navbar8-action21 thq-button-outline thq-button-animated"
+                >
+                  <span>
+                    <fragment class="home-fragment109">
+                      <span class="home-text109">Log In</span>
+                    </fragment>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </header>
+        </header>
+      </navbar8-wrapper>
+
 <div class="container">
-    <h2>Queue Position: <span id="position">Not in queue</span></h2>
-    <button id="joinButton" class="button">Join Queue</button>
-    <button id="leaveButton" class="button hidden">Leave Queue</button>
-
-    <div id="wordInputContainer" class="hidden">
-        <input type="text"
-               id="wordInput"
-               class="word-input"
-               placeholder="Enter your word"
-               maxlength="100">
-        <button id="submitWordButton" class="button">Submit Word</button>
+    <div class="left-column">
+        <div class="game-history">
+            <h3>Game History</h3>
+            <div id="gameHistory"></div>
+        </div>
     </div>
+    <div class="right-column">
+        <div class="queue-controls">
+            <h2>Queue Position: <span id="position">Not in queue</span></h2>
+            <button id="joinButton" class="button">Join Queue</button>
+            <button id="leaveButton" class="button hidden">Leave Queue</button>
 
-    <div class="game-history">
-        <h3>Game History</h3>
-        <div id="gameHistory"></div>
+            <div id="wordInputContainer" class="hidden">  <input type="text"
+                        id="wordInput"
+                        class="word-input"
+                        placeholder="Enter your word"
+                        maxlength="100">
+                <button id="submitWordButton" class="button">Submit Word</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -182,7 +663,7 @@
             this.elements.position.textContent = 'Not in queue';
             this.elements.joinButton.classList.remove('hidden');
             this.elements.leaveButton.classList.add('hidden');
-            this.elements.wordInputContainer.classList.add('hidden');
+            this.elements.wordInputContainer.classList.add('hidden'); // Already here - confirms it hides after submission
         }
 
         startPositionCheck() {
