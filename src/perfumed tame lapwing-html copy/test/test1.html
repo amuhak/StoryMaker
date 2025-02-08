@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rockstar Website</title>
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+    <header>
+        <h1>Rockstar Life</h1>
+    </header>
+
+    <main>
+        <section id="day-list-habit-tracker">
+            <h2>Day-to-Day List & Habit Tracker</h2>
+            <div id="day-list">
+                <h3>Today's List</h3>
+                <input type="text" id="new-task" placeholder="Add a task">
+                <button onclick="addTask()">Add Task</button>
+                <ul id="tasks"></ul>
+            </div>
+            <div id="habit-tracker">
+                <h3>Habit Tracker</h3>
+                <input type="text" id="new-habit" placeholder="Add a habit">
+                <button onclick="addHabit()">Add Habit</button>
+                <ul id="habits"></ul>
+            </div>
+        </section>
+
+        <section id="lyrics-game">
+            <h2>Lyrics Combining Game</h2>
+            <div id="game-area">
+                <p id="lyric-snippet">Click 'Start Game' to begin!</p>
+                <textarea id="user-lyric-combination" placeholder="Combine lyrics here..."></textarea>
+                <button onclick="startGame()">Start Game</button>
+                <button onclick="checkCombination()">Check Combination</button>
+                <p id="game-message"></p>
+            </div>
+        </section>
+
+        <section id="image-quote-generator">
+            <h2>Random Image & Quote</h2>
+            <div id="image-container">
+                <img id="random-image" src="placeholder-image.jpg" alt="Random Rockstar Image">
+            </div>
+            <div id="quote-container">
+                <p id="motivational-quote">Click 'Generate' for a quote.</p>
+                <button onclick="generateImageQuote()">Generate</button>
+            </div>
+        </section>
+
+        <section id="playlist-generator">
+            <h2>Mood-Based Playlist Generator</h2>
+            <div id="mood-selector">
+                <label for="mood">How are you feeling?</label>
+                <select id="mood">
+                    <option value="energetic">Energetic</option>
+                    <option value="mellow">Mellow</option>
+                    <option value="pumped">Pumped Up</option>
+                    <option value="reflective">Reflective</option>
+                </select>
+                <button onclick="generatePlaylist()">Generate Playlist</button>
+            </div>
+            <div id="playlist-area">
+                <h3>Your Playlist</h3>
+                <ul id="playlist"></ul>
+            </div>
+        </section>
+
+        <section id="music-maker">
+            <h2>Music Maker</h2>
+            <div id="instruments">
+                <button onclick="playSound('drum')">Drum</button>
+                <button onclick="playSound('guitar')">Guitar</button>
+                <button onclick="playSound('keyboard')">Keyboard</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Rockstar Website</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
