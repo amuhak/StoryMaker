@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In / Sign Up</title>
+    <style>
+        /* style.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    color: #333;
+    background-color: #f9f4ef; /* Light beige background */
+    line-height: 1.6;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure full viewport height */
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Auth Section Styles */
+#auth-section {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+}
+
+.auth-container {
+    max-width: 500px; /* Adjust container width as needed */
+    margin: 0 auto;
+}
+
+.form-wrapper {
+    padding: 20px;
+}
+
+.auth-form {
+    display: block; /* Ensure forms are block level */
+}
+
+.auth-form h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box; /* Important for padding and border to be inside the width */
+}
+
+.auth-button {
+    padding: 14px 30px;
+    background-color: #e0cba8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    display: block; /* Make button full width */
+    width: 100%;
+    margin-top: 10px;
+}
+
+.auth-button:hover {
+    background-color: #d0bb98;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 15px;
+    color: #777;
+    font-size: 0.9em;
+}
+
+.form-footer a {
+    color: #e0cba8;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #d9534f; /* Red color for errors */
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+
+/* Pop-up Styles */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top of everything */
+}
+
+.popup-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 400px; /* Adjust width as needed */
+}
+
+.popup-content h2 {
+    color: #333;
+    margin-top: 0;
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.popup-content p {
+    color: #555;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+    </style>
+</head>
+<body>
+    <main>
+        <section id="auth-section">
+            <div class="container auth-container">
+                <div class="form-wrapper">
+                    <form id="login-form" class="auth-form">
+                        <h2>Log In</h2>
+                        <div class="input-group">
+                            <label for="login-email">Email:</label>
+                            <input type="email" id="login-email" name="login-email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="login-password">Password:</label>
+                            <input type="password" id="login-password" name="login-password" required>
+                        </div>
+                        <button type="submit" class="auth-button">Log In</button>
+                        <p class="form-footer">
+                            Don't have an account? <a href="#" id="signup-link">Sign Up</a>
+                        </p>
+                        <div id="login-error" class="error-message" style="display:none;"></div>
+                    </form>
+
+                    <form id="signup-form" class="auth-form" style="display: none;">
+                        <h2>Sign Up</h2>
+                        <div class="input-group">
+                            <label for="signup-email">Email:</label>
+                            <input type="email" id="signup-email" name="signup-email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="signup-password">Password:</label>
+                            <input type="password" id="signup-password" name="signup-password" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="confirm-password">Confirm Password:</label>
+                            <input type="password" id="confirm-password" name="confirm-password" required>
+                        </div>
+                        <button type="submit" class="auth-button">Sign Up</button>
+                        <p class="form-footer">
+                            Already have an account? <a href="#" id="login-link">Log In</a>
+                        </p>
+                        <div id="signup-error" class="error-message" style="display:none;"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <div id="congrats-popup" class="popup" style="display: none;">
+            <div class="popup-content">
+                <h2 id="congrats-message-header"></h2>
+                <p id="congrats-message-body"></p>
+                <p>Redirecting to homepage in 5 seconds...</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // script.js
+
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const signupLink = document.getElementById('signup-link');
+    const loginLink = document.getElementById('login-link');
+    const loginError = document.getElementById('login-error');
+    const signupError = document.getElementById('signup-error');
+
+    // Congratulatory Popup Elements
+    const congratsPopup = document.getElementById('congrats-popup');
+    const congratsMessageHeader = document.getElementById('congrats-message-header');
+    const congratsMessageBody = document.getElementById('congrats-message-body');
+
+
+    signupLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        loginError.style.display = 'none'; // Hide errors when switching forms
+        signupError.style.display = 'none';
+        congratsPopup.style.display = 'none'; // Hide popup when switching forms
+    });
+
+    loginLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        signupForm.style.display = 'none';
+        loginForm.style.display = 'block';
+        loginError.style.display = 'none'; // Hide errors when switching forms
+        signupError.style.display = 'none';
+        congratsPopup.style.display = 'none'; // Hide popup when switching forms
+    });
+
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent actual form submission for this demo
+        const email = loginForm.querySelector('#login-email').value;
+        const password = loginForm.querySelector('#login-password').value;
+
+        if (!email || !password) {
+            loginError.textContent = "Please fill in all fields.";
+            loginError.style.display = 'block';
+            congratsPopup.style.display = 'none'; // Ensure popup is hidden on error
+        } else {
+            // Simulate successful login
+            loginError.style.display = 'none';
+            loginForm.reset();
+
+            // Show congratulatory popup for login
+            congratsMessageHeader.textContent = "Login Successful, Rockstar!";
+            congratsMessageBody.textContent = "You're in and ready to make some noise.";
+            congratsPopup.style.display = 'flex'; // Use flex to center the popup
+
+            // Redirect to homepage after 5 seconds
+            setTimeout(function() {
+                window.location.href = 'index'; // Replace with your homepage URL if different
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+    });
+
+    signupForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent actual form submission for this demo
+        const email = signupForm.querySelector('#signup-email').value;
+        const password = signupForm.querySelector('#signup-password').value;
+        const confirmPassword = signupForm.querySelector('#confirm-password').value;
+
+        if (!email || !password || !confirmPassword) {
+            signupError.textContent = "Please fill in all fields.";
+            signupError.style.display = 'block';
+            congratsPopup.style.display = 'none'; // Ensure popup is hidden on error
+        } else if (password !== confirmPassword) {
+            signupError.textContent = "Passwords do not match.";
+            signupError.style.display = 'block';
+            congratsPopup.style.display = 'none'; // Ensure popup is hidden on error
+        }  else {
+            // Simulate successful signup
+            signupError.style.display = 'none';
+            signupForm.reset();
+
+            // Show congratulatory popup for signup
+            congratsMessageHeader.textContent = "Signup Successful, Rockstar!";
+            congratsMessageBody.textContent = "Welcome to the stage! Get ready to rock.";
+            congratsPopup.style.display = 'flex'; // Use flex to center the popup
+
+            // Optionally switch back to login form after successful signup for better UX
+            signupForm.style.display = 'none';
+            loginForm.style.display = 'block';
+
+            // Redirect to homepage after 5 seconds
+            setTimeout(function() {
+                window.location.href = 'index'; // Replace with your homepage URL if different
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+    });
+});
+    </script>
+</body>
+</html>
