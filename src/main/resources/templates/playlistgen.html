@@ -310,6 +310,13 @@ justify-content: space-between;
     justify-content: flex-start;
   }
 
+#spotify {
+  width: 100px;
+  height: 50px;
+  border-radius: 7%;
+  border: 2px black solid;
+}
+
 .navbar8-image1 {
 height: 3rem;
 }
@@ -625,15 +632,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     const spotifyUrl = playlist.spotifyURL || playlist.spotify_url || playlist.url || playlist.link || '#';
                     
                     const playlistHTML = `
-                        <div class="playlist-image" style="background-image: url('${imageUrl}')"></div>
-                        <h3 class="playlist-name">${playlist.name || 'Unnamed Playlist'}</h3>
-                        <p class="playlist-description">Mood: ${mood}</p>
                         <a href="${spotifyUrl}" 
                            target="_blank" 
                            class="auth-button" 
                            style="display: inline-block; text-decoration: none; margin-top: 15px;">
-                            <img src="spotify.png" alt="spotify">
+                            <img src="spotify.png" alt="spotify" id="spotify">
                         </a>
+                        <div class="playlist-image" style="background-image: url('${imageUrl}')"></div>
+                        <h3 class="playlist-name">${playlist.name || 'Unnamed Playlist'}</h3>
+                        <p class="playlist-description">Mood: ${mood}</p>
                     `;
                     
                     playlistElement.innerHTML = playlistHTML;
