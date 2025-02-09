@@ -463,6 +463,20 @@ a {
     color: #BF4408;
 }
 
+.summary {
+    margin-top: 20px; /* Space above the summary */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Light background for summary */
+    font-style: italic; /* Make summary italic (optional) */
+    color: #555; /* Slightly darker text for summary */
+}
+.summary.error {
+    color: red; /* Error message in red */
+    font-style: normal; /* Error message not italic */
+}
+
 .thq-button-outline:hover {
 fill: var(--dl-color-theme-secondary2);
 color: var(--dl-color-theme-secondary2);
@@ -612,6 +626,54 @@ background-color: var(--dl-color-theme-primary2);
             this.initializeEventListeners();
             this.startGameHistoryUpdates();
         }
+
+        async submitWord() {
+                const word = this.elements.wordInput.value;
+                try {
+                    await fetch(`/songmaker/queue/remove-first?password=${this.password}&word=${word}`, {
+                        method: 'POST'
+                    });
+                    this.elements.wordInput.value = '';
+                    await this.updateGameHistory(); // Update history *after* word submission
+                    await this.summarizeStory();      // Call the summarize function
+                    this.resetQueueState();
+                } catch (error) {
+                    console.error('Failed to submit word:', error);
+                }
+            }
+
+            async summarizeStory() {
+                try {
+                    const response = await fetch('/songmaker/queue/summary', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json' // Important for POST with JSON
+                        },
+                        body: JSON.stringify({ text: this.elements.gameHistory.textContent }) // Send the story text
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json(); // Try to get error details from the server
+                        throw new Error(`Failed to summarize story: ${response.status} - ${errorData.message || response.statusText}`);
+                    }
+
+                    const summary = await response.json(); // Assuming the server returns JSON with the summary
+
+                    // Display the summary (example - you might want to format it differently)
+                    const summaryElement = document.createElement('div');
+                    summaryElement.classList.add('summary'); // Add a class for styling if needed
+                    summaryElement.textContent = summary.summary; // Access the 'summary' property from the JSON
+                    this.elements.gameHistory.appendChild(summaryElement); // Add it to the game history
+
+                } catch (error) {
+                    console.error('Error summarizing story:', error);
+                    // Handle the error (e.g., display a message to the user)
+                    const summaryElement = document.createElement('div');
+                    summaryElement.classList.add('summary', 'error'); // Add a class for styling if needed
+                    summaryElement.textContent = "Error generating summary. Please try again later.";
+                    this.elements.gameHistory.appendChild(summaryElement);
+                }
+            }
 
         initializeEventListeners() {
             this.elements.joinButton.addEventListener('click', () => this.joinQueue());
