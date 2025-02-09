@@ -5,98 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Editor</title>
     <style>
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&amp;display=swap");
+
+:root {
+    --dl-size-size-large: 144px;
+    --dl-size-size-small: 48px;
+    --dl-size-size-medium: 96px;
+    --dl-size-size-xlarge: 192px;
+    --dl-size-size-xsmall: 16px;
+    --dl-space-space-unit: 16px;
+    --dl-size-size-xxlarge: 288px;
+    --dl-size-size-maxwidth: 1400px;
+    --dl-color-theme-accent1: #FFFFFF;
+    --dl-color-theme-accent2: #F5D1B0;
+    --dl-radius-radius-round: 50%;
+    --dl-color-theme-primary1: #BF4408;
+    --dl-color-theme-primary2: #E65103;
+    --dl-space-space-halfunit: 8px;
+    --dl-space-space-sixunits: 96px;
+    --dl-space-space-twounits: 32px;
+    --dl-radius-radius-radius2: 2px;
+    --dl-radius-radius-radius4: 4px;
+    --dl-radius-radius-radius8: 8px;
+    --dl-space-space-fiveunits: 80px;
+    --dl-space-space-fourunits: 64px;
+    --dl-color-theme-secondary1: #FFFFFF;
+    --dl-color-theme-secondary2: #FBF1EB;
+    --dl-space-space-threeunits: 48px;
+    --dl-color-theme-neutral-dark: #191818;
+    --dl-radius-radius-cardradius: 8px;
+    --dl-color-theme-neutral-light: #FBFAF9;
+    --dl-radius-radius-imageradius: 8px;
+    --dl-radius-radius-inputradius: 24px;
+    --dl-radius-radius-buttonradius: 24px;
+    --dl-space-space-oneandhalfunits: 24px;
+  }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
+            padding-top: 10px;
+            background-color: #FAF7F4;  /* Matching the warm background color */
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: auto;
             background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            border-radius: 24px;  /* Increased border radius for softer corners */
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);  /* Softer shadow */
         }
 
         h1 {
             color: #333;
-            text-align: center;
-            margin-bottom: 30px;
+            text-align: left;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            font-weight: 600;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
+            color: #666;
             font-weight: 500;
+            font-size: 0.95rem;
         }
 
         input[type="file"],
         select,
         input[type="text"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px;
+            border: 1px solid #E5E0DB;  /* Warmer border color */
+            border-radius: 12px;  /* Rounded corners */
             box-sizing: border-box;
             font-size: 14px;
+            background-color: #FAF7F4;  /* Matching input background */
+            transition: all 0.2s ease;
         }
 
         input[type="file"] {
-            padding: 8px;
-            background-color: #f8f9fa;
+            padding: 10px;
         }
 
-        select {
-            background-color: white;
+        input[type="file"]:hover,
+        select:hover,
+        input[type="text"]:hover {
+            border-color: #D6CEC7;  /* Darker border on hover */
+        }
+
+        input[type="file"]:focus,
+        select:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #E2D5C3;  /* Warm focus color */
+            box-shadow: 0 0 0 3px rgba(226, 213, 195, 0.2);  /* Subtle focus ring */
         }
 
         button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 20px;
+            background-color: #E2D5C3;  /* Warm button color */
+            color: #333;
+            padding: 14px 24px;
             border: none;
-            border-radius: 4px;
+            border-radius: 12px;
             cursor: pointer;
-            width: 100%;
             font-size: 16px;
-            transition: background-color 0.3s;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #D6C7B1;  /* Slightly darker on hover */
         }
 
         button:disabled {
-            background-color: #cccccc;
+            background-color: #E5E0DB;
             cursor: not-allowed;
-        }
-
-        #status {
-            margin-top: 20px;
         }
 
         .progress-bar {
             width: 100%;
-            height: 20px;
-            background-color: #f0f0f0;
-            border-radius: 10px;
+            height: 6px;  /* Thinner progress bar */
+            background-color: #FAF7F4;
+            border-radius: 3px;
             overflow: hidden;
-            margin-top: 10px;
+            margin-top: 20px;
             display: none;
         }
 
         .progress-bar-fill {
             height: 100%;
-            background-color: #4CAF50;
+            background-color: #E2D5C3;  /* Matching warm theme */
             width: 0%;
             transition: width 0.3s ease;
         }
@@ -104,92 +156,406 @@
         .download-button {
             display: block;
             margin-top: 20px;
-            padding: 12px 20px;
-            background-color: #2196F3;
-            color: white;
+            padding: 14px 24px;
+            background-color: #E2D5C3;
+            color: #333;
             text-decoration: none;
             text-align: center;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+            border-radius: 12px;
+            transition: all 0.2s ease;
         }
 
         .download-button:hover {
-            background-color: #1976D2;
+            background-color: #D6C7B1;
         }
 
         #downloadArea {
-            margin-top: 20px;
+            margin-top: 24px;
         }
 
         .status-message {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 4px;
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 12px;
             text-align: center;
+            font-size: 0.95rem;
         }
 
         .error-message {
-            background-color: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
+            background-color: #FFF5F5;
+            color: #C53030;
+            border: 1px solid #FED7D7;
         }
 
         .success-message {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
+            background-color: #F0FFF4;
+            color: #276749;
+            border: 1px solid #C6F6D5;
         }
+
+        /* Grid layout for form groups */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+
+.navbar8-wrapper {
+    display: contents;
+
+  }
+
+.navbar8-container1 {
+    top: 0;
+    width: 100%;
+    display: flex;
+    z-index: 1000;
+    position: sticky;
+    justify-content: center;
+    background-color: var(--dl-color-theme-neutral-light);
+}
+
+.navbar8-navbar-interactive {
+    width: 100%;
+    display: flex;
+    z-index: 100;
+    max-width: var(--dl-size-size-maxwidth);
+    align-items: center;
+    padding-top: var(--dl-space-space-oneandhalfunits);
+    padding-left: var(--dl-space-space-threeunits);
+    padding-right: var(--dl-space-space-threeunits);
+    padding-bottom: var(--dl-space-space-oneandhalfunits);
+    justify-content: space-between;
+  }
+
+.navbar8-desktop-menu {
+flex: 1;
+display: flex;
+justify-content: space-between;
+}
+
+.navbar8-links1 {
+    gap: var(--dl-space-space-twounits);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin-left: var(--dl-space-space-twounits);
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+.navbar8-image1 {
+height: 3rem;
+}
+
+.navbar8-link11 {
+text-decoration: none;
+}
+
+.thq-body-small {
+font-size: 16px;
+font-family: Noto Sans;
+line-height: 1.5;
+}
+
+.thq-link {
+cursor: pointer;
+overflow: hidden;
+background: linear-gradient(to right, var(--dl-color-theme-primary1) 50%, var(--dl-color-theme-neutral-dark) 50%);
+transition: background-position 300ms ease;
+font-weight: 600;
+background-clip: text;
+background-size: 200% 100%;
+background-position: 100%;
+-webkit-text-fill-color: transparent;
+}
+
+.thq-link:hover {
+background-position: 0 100%;
+}
+
+.home-text100 {
+display: inline-block;
+}
+
+.navbar8-link31 {
+text-decoration: none;
+}
+
+.navbar8-link4-dropdown-trigger {
+    gap: 4px;
+    cursor: pointer;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+.navbar8-buttons1 {
+gap: var(--dl-space-space-twounits);
+display: flex;
+align-items: center;
+flex-direction: row;
+}
+
+.thq-button-filled {
+gap: var(--dl-space-space-halfunit);
+fill: var(--dl-color-theme-secondary1);
+color: var(--dl-color-theme-secondary1);
+cursor: pointer;
+display: flex;
+transition: 0.3s;
+align-items: center;
+font-weight: bold;
+padding-top: var(--dl-space-space-halfunit);
+white-space: nowrap;
+border-color: var(--dl-color-theme-primary1);
+border-width: 1px;
+padding-left: var(--dl-space-space-oneandhalfunits);
+border-radius: var(--dl-radius-radius-buttonradius);
+padding-right: var(--dl-space-space-oneandhalfunits);
+padding-bottom: var(--dl-space-space-halfunit);
+justify-content: center;
+background-color: var(--dl-color-theme-primary1);
+}
+
+.thq-button-filled:hover {
+fill: var(--dl-color-theme-secondary2);
+color: var(--dl-color-theme-secondary2);
+border-color: var(--dl-color-theme-primary2);
+background-color: var(--dl-color-theme-primary2);
+}
+
+.thq-button-animated:before {
+top: 0;
+left: -20%;
+color: var(--dl-color-theme-neutral-light);
+width: 200%;
+height: 101%;
+content: "";
+z-index: 1;
+position: absolute;
+transform: scaleX(0);
+transition: transform 0.5s;
+border-radius: var(--dl-radius-radius-buttonradius);
+background-color: var(--dl-color-theme-neutral-dark);
+transform-origin: 0 0;
+transition-timing-function: cubic-bezier(0.5, 1.6, 0.4, 0.7);
+}
+
+.thq-button-animated:hover::before {
+color: var(--dl-color-theme-neutral-light);
+z-index: -1;
+transform: scaleX(1);
+}
+
+.thq-button-animated {
+outline: none;
+z-index: 1;
+overflow: hidden;
+position: relative;
+border-width: 2px;
+}
+
+.thq-button-outline {
+gap: var(--dl-space-space-halfunit);
+fill: var(--dl-color-theme-primary1);
+color: var(--dl-color-theme-primary1);
+border: 1px solid;
+cursor: pointer;
+display: flex;
+transition: 0.3s;
+align-items: center;
+font-weight: bold;
+padding-top: var(--dl-space-space-halfunit);
+white-space: nowrap;
+border-color: var(--dl-color-theme-primary1);
+padding-left: 30px;
+border-radius: var(--dl-radius-radius-buttonradius);
+padding-right: 30px;
+padding-bottom: var(--dl-space-space-halfunit);
+justify-content: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.home-container {
+  width: 100%;
+  display: flex;
+  padding-bottom: 20px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.home-text108 {
+    color: white;
+}
+
+.home-text109 {
+    color: #BF4408;
+}
+
+.thq-button-outline:hover {
+fill: var(--dl-color-theme-secondary2);
+color: var(--dl-color-theme-secondary2);
+border-color: var(--dl-color-theme-primary2);
+background-color: var(--dl-color-theme-primary2);
+}
+
     </style>
 </head>
 <body>
+    <div class="home-container">
+        <navbar8-wrapper class="navbar8-wrapper">
+          <!--Navbar8 component-->
+          <header class="navbar8-container1">
+            <header data-thq="thq-navbar" class="navbar8-navbar-interactive">
+              <img
+                alt="Rockstar Logo"
+                src="images/HackathonLogo.jpeg"
+                class="navbar8-image1"
+              />
+              <div data-thq="thq-navbar-nav" class="navbar8-desktop-menu">
+                <nav class="navbar8-links1">
+                  <a
+                    href="/"
+                    class="navbar8-link11 thq-body-small thq-link"
+                  >
+                    <fragment class="home-fragment100">
+                      <span class="home-text100">#home</span>
+                    </fragment>
+                  </a>
+                  <a
+                    href="fanwall"
+                    class="thq-body-small thq-link"
+                  >
+                    <fragment class="home-fragment101">
+                      <span class="home-text101">#fanwall</span>
+                    </fragment>
+                  </a>
+                  <a
+                    href="beatmaker"
+                    rel="noreferrer noopener"
+                    class="navbar8-link31 thq-body-small thq-link"
+                  >
+                    <fragment class="home-fragment102">
+                      <span class="home-text102">#beatmaker</span>
+                    </fragment>
+                  </a>
+                  <div>
+                    <a
+                    href="videoeditor"
+                    rel="noreferrer noopener"
+                    class="navbar8-link31 thq-body-small thq-link"
+                  >
+                    <fragment class="home-fragment102">
+                      <span class="home-text102">#videoedit</span>
+                    </fragment>
+                  </a>
+                  </div>
+                  <div class="navbar8-link4-dropdown-trigger">
+                    <span class="thq-body-small thq-link">
+                      <fragment class="home-fragment103">
+                        <a href="playlistgen"><span class="home-text103">#playlistgen</span></a>
+                      </fragment>
+                    </span>
+                    <div class="navbar8-icon-container1">
+                      <div class="navbar8-container2">
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="navbar8-link4-dropdown-trigger">
+                  <div class="navbar8-link4-dropdown-trigger">
+                    <span class="thq-body-small thq-link">
+                      <fragment class="home-fragment103">
+                        <a href="songmaker"><span class="home-text103">#songmaker</span></a>
+                      </fragment>
+                    </span>
+                  </div>
+
+                </nav>
+                <div class="navbar8-buttons1">
+                  <button
+                    class="navbar8-action11 thq-button-filled thq-button-animated"
+                  >
+                    <span>
+                      <fragment class="home-fragment108">
+                        <a href="login"><span class="home-text108">Sign Up</span></a>
+                      </fragment>
+                    </span>
+                  </button>
+                  <button
+                    class="navbar8-action21 thq-button-outline thq-button-animated"
+                  >
+                    <span>
+                      <fragment class="home-fragment109">
+                        <a href="login"><span class="home-text109">Log In</span></a>
+                      </fragment>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </header>
+          </header>
+        </navbar8-wrapper>
+    </div>
+
 <div class="container">
     <h1>Video Editor</h1>
+    
     <div class="form-group">
-        <label for="fileInput">Select Video File:</label>
+        <label for="fileInput">Select Video File</label>
         <input type="file" id="fileInput" accept="video/*">
     </div>
 
-    <div class="form-group">
-        <label for="extension">Output Format:</label>
-        <select id="extension">
-            <option value="mp4">MP4</option>
-        </select>
-    </div>
+    <div class="form-grid">
+        <div class="form-group">
+            <label for="extension">Output Format</label>
+            <select id="extension">
+                <option value="mp4">MP4</option>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="codec">Video Codec:</label>
-        <select id="codec">
-            <option value="">Keep Original</option>
-            <option value="libx264">H.264</option>
-            <option value="libx265">H.265</option>
-            <option value="libvpx-vp9">VP9</option>
-            <option value="libsvtav1">AV1</option>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="codec">Video Codec</label>
+            <select id="codec">
+                <option value="">Keep Original</option>
+                <option value="libx264">H.264</option>
+                <option value="libx265">H.265</option>
+                <option value="libvpx-vp9">VP9</option>
+                <option value="libsvtav1">AV1</option>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="crop">Crop (w:h:x:y):</label>
-        <input type="text" id="crop" placeholder="e.g., 1280:720:0:0">
-    </div>
+        <div class="form-group">
+            <label for="crop">Crop (w:h:x:y)</label>
+            <input type="text" id="crop" placeholder="e.g., 1280:720:0:0">
+        </div>
 
-    <div class="form-group">
-        <label for="trimStart">Trim Start Time (HH:MM:SS):</label>
-        <input type="text" id="trimStart" placeholder="00:00:00">
-    </div>
+        <div class="form-group">
+            <label for="resolution">Resolution</label>
+            <input type="text" id="resolution" placeholder="e.g., 1280:720">
+        </div>
 
-    <div class="form-group">
-        <label for="trimEnd">Trim End Time (HH:MM:SS):</label>
-        <input type="text" id="trimEnd" placeholder="00:00:00">
-    </div>
+        <div class="form-group">
+            <label for="trimStart">Trim Start Time (HH:MM:SS)</label>
+            <input type="text" id="trimStart" placeholder="00:00:00">
+        </div>
 
-    <div class="form-group">
-        <label for="resolution">Resolution:</label>
-        <input type="text" id="resolution" placeholder="e.g., 1280:720">
-    </div>
+        <div class="form-group">
+            <label for="trimEnd">Trim End Time (HH:MM:SS)</label>
+            <input type="text" id="trimEnd" placeholder="00:00:00">
+        </div>
 
-    <div class="form-group">
-        <label for="fps">Frame Rate (FPS):</label>
-        <input type="text" id="fps" placeholder="e.g., 30">
+        <div class="form-group">
+            <label for="fps">Frame Rate (FPS)</label>
+            <input type="text" id="fps" placeholder="e.g., 30">
+        </div>
     </div>
 
     <button onclick="uploadFile()" id="processButton">Process Video</button>
@@ -202,6 +568,7 @@
     <div id="downloadArea"></div>
 </div>
 
+<!-- Original JavaScript remains unchanged -->
 <script>
     async function uploadFile() {
         const file = document.getElementById('fileInput').files[0];
