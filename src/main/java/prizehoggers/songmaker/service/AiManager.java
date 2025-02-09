@@ -17,7 +17,12 @@ public class AiManager {
         for (int i = 0; i < 3; i++) {
             try {
                 return ollamaAPI.generate("phi4",
-                        "Summarize the following text: " + context, false, new OptionsBuilder().build()).getResponse();
+                        "Could you please provide a VERY SHORT summary of the given text? The summary "
+                                + "should capture the main points and key details of the text while without including"
+                                + " unnecessary"
+                                + " information or becoming overly long. In case the text is incomprehensible or too "
+                                + "short to understand provide a very short response. TEXT START: "
+                                + context, false, new OptionsBuilder().build()).getResponse();
             } catch (Exception e) {
                 logger.error("Error: {}", e.getMessage());
             }
@@ -28,9 +33,10 @@ public class AiManager {
     public static synchronized String generateMotivationalQuote() {
         for (int i = 0; i < 3; i++) {
             try {
-                OllamaResult result =
-                        ollamaAPI.generate("phi4", "Generate only one motivational quote. Dont give me any other "
-                                + "text, no markdown, dont provide a source for the quote (dont say -- Nelson Mandela)", false, new OptionsBuilder().build());
+                OllamaResult result = ollamaAPI.generate("phi4",
+                        "Generate only one motivational quote. Dont give me any other "
+                                + "text, no markdown, dont provide a source for the quote (dont say -- Nelson "
+                                + "Mandela)", false, new OptionsBuilder().build());
                 return result.getResponse();
             } catch (Exception e) {
                 logger.error("Error: {}", e.getMessage());

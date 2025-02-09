@@ -1,4 +1,4 @@
-package prizehoggers.songmaker.controller;
+package prizehoggers.songmaker.Controller;
 
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
