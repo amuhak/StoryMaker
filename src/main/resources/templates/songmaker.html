@@ -644,33 +644,28 @@ background-color: var(--dl-color-theme-primary2);
             }
 
             async summarizeStory() {
-                try {
-                    const response = await fetch('/songmaker/queue/summary', {
-                        method: 'POST'
-                    });
+            try {
+                const response = await fetch('/songmaker/queue/summary', {
+                    method: 'POST'
+                });
 
-                    if (!response.ok) {
-                        const errorData = await response.json(); // Try to get error details from the server
-                        throw new Error(`Failed to summarize story: ${response.status} - ${errorData.message || response.statusText}`);
-                    }
-
-                    const summary = await response.json(); // Assuming the server returns JSON with the summary
-
-                    // Display the summary (example - you might want to format it differently)
-                    const summaryElement = document.createElement('div');
-                    summaryElement.classList.add('summary'); // Add a class for styling if needed
-                    summaryElement.textContent = summary.summary; // Access the 'summary' property from the JSON
-                    this.elements.gameHistory.appendChild(summaryElement); // Add it to the game history
-
-                } catch (error) {
-                    console.error('Error summarizing story:', error);
-                    // Handle the error (e.g., display a message to the user)
-                    const summaryElement = document.createElement('div');
-                    summaryElement.classList.add('summary', 'error'); // Add a class for styling if needed
-                    summaryElement.textContent = "Error generating summary. Please try again later.";
-                    this.elements.gameHistory.appendChild(summaryElement);
+                if (!response.ok) {
+                    const errorData = await response.json(); // Still try to parse JSON error if available
+                    throw new Error(`Failed to summarize story: ${response.status} - ${errorData.message || response.statusText}`);
                 }
+
+                const summaryText = await response.text(); // Get the response as plain text
+
+                const summaryTextElement = document.getElementById('summaryText');
+                summaryTextElement.textContent = summaryText; // Set the text directly
+
+            } catch (error) {
+                console.error('Error summarizing story:', error);
+                const summaryTextElement = document.getElementById('summaryText');
+                summaryTextElement.classList.add('error');
+                summaryTextElement.textContent = "Error generating summary. Please try again later.";
             }
+        }
 
         initializeEventListeners() {
             this.elements.joinButton.addEventListener('click', () => this.joinQueue());
