@@ -94,4 +94,8 @@ public class QueueController {
         }
     }
 
+    @PostMapping("/summary")
+    public ResponseEntity<String> getSummary() {
+        return ResponseEntity.ok(SongMakerApplication.gameManager.getSummary());
+    }
 }
