@@ -1,4 +1,4 @@
-package prizehoggers.songmaker.controller;
+package prizehoggers.songmaker.Controller;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.Logger;

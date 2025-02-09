@@ -1,4 +1,4 @@
-package prizehoggers.songmaker.controller;
+package prizehoggers.songmaker.Controller;
 
 import java.util.ArrayList;
 import java.util.List;

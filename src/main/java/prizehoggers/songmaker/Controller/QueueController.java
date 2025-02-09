@@ -1,4 +1,4 @@
-package prizehoggers.songmaker.controller;
+package prizehoggers.songmaker.Controller;
 
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +51,7 @@ public class QueueController {
     }
 
     @PostMapping("/remove-first")
-    public ResponseEntity<String> removeFirstUser(@RequestParam String password, @RequestParam String word) {
+    public ResponseEntity<String> removeFirstUser(@RequestParam String password, @RequestParam(required = false) String word) {
         synchronized (userQueue) {
             if (userQueue.isEmpty() || !userQueue.getFirst().equals(password)) {
                 return ResponseEntity.badRequest().body("You are not the first user in the queue");

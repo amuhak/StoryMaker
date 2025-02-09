@@ -847,6 +847,20 @@ background-color: var(--dl-color-theme-primary2);
             } catch (error) {
                 console.error('Failed to update game history:', error);
             }
+            try {
+                const response = await fetch('/data');
+                const data = await response.text();
+
+                // Check if the history has changed
+                if (data.length !== this.lastHistoryLength) {
+                    this.lastHistoryLength = data.length;
+                    this.elements.gameHistory.textContent = data;
+                    // Update summary when history changes
+                    await this.summarizeStory();
+                }
+            } catch (error) {
+                console.error('Failed to update game history:', error);
+            }
         }
 
         startGameHistoryUpdates() {
