@@ -1,14 +1,15 @@
 package prizehoggers.songmaker.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import prizehoggers.songmaker.data.PlayListData;
 import prizehoggers.songmaker.service.PlayListGen;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/playList/")
