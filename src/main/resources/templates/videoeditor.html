@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Editor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="file"],
+        select,
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            background-color: #f8f9fa;
+        }
+
+        select {
+            background-color: white;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .download-button {
+            display: block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .download-button:hover {
+            background-color: #1976D2;
+        }
+
+        #downloadArea {
+            margin-top: 20px;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Video Editor</h1>
+    <div class="form-group">
+        <label for="fileInput">Select Video File:</label>
+        <input type="file" id="fileInput" accept="video/*">
+    </div>
+
+    <div class="form-group">
+        <label for="extension">Output Format:</label>
+        <select id="extension">
+            <option value="mp4">MP4</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="codec">Video Codec:</label>
+        <select id="codec">
+            <option value="">Keep Original</option>
+            <option value="libx264">H.264</option>
+            <option value="libx265">H.265</option>
+            <option value="libvpx-vp9">VP9</option>
+            <option value="libsvtav1">AV1</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="crop">Crop (w:h:x:y):</label>
+        <input type="text" id="crop" placeholder="e.g., 1280:720:0:0">
+    </div>
+
+    <div class="form-group">
+        <label for="trimStart">Trim Start Time (HH:MM:SS):</label>
+        <input type="text" id="trimStart" placeholder="00:00:00">
+    </div>
+
+    <div class="form-group">
+        <label for="trimEnd">Trim End Time (HH:MM:SS):</label>
+        <input type="text" id="trimEnd" placeholder="00:00:00">
+    </div>
+
+    <div class="form-group">
+        <label for="resolution">Resolution:</label>
+        <input type="text" id="resolution" placeholder="e.g., 1280:720">
+    </div>
+
+    <div class="form-group">
+        <label for="fps">Frame Rate (FPS):</label>
+        <input type="text" id="fps" placeholder="e.g., 30">
+    </div>
+
+    <button onclick="uploadFile()" id="processButton">Process Video</button>
+
+    <div class="progress-bar" id="progressBar">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+    </div>
+
+    <div id="statusMessage" class="status-message"></div>
+    <div id="downloadArea"></div>
+</div>
+
+<script>
+    async function uploadFile() {
+        const file = document.getElementById('fileInput').files[0];
+        if (!file) {
+            showStatus('Please select a file to upload.', 'error');
+            return;
+        }
+
+        const processButton = document.getElementById('processButton');
+        const progressBar = document.getElementById('progressBar');
+        const progressBarFill = document.getElementById('progressBarFill');
+
+        processButton.disabled = true;
+        progressBar.style.display = 'block';
+
+        const chunkSize = 90 * 1024 * 1024; // 90MB chunks
+        const chunks = Math.ceil(file.size / chunkSize);
+        const hash = await calculateHash(file);
+
+        // Get file details
+        const originalExtension = file.name.split('.').pop();
+        const fileNameWithoutExt = file.name.slice(0, -(originalExtension.length + 1));
+        const newExtension = document.getElementById('extension').value || originalExtension;
+
+        try {
+            // Upload chunks
+            for (let i = 0; i < chunks; i++) {
+                const start = i * chunkSize;
+                const end = Math.min(file.size, start + chunkSize);
+                const chunk = file.slice(start, end);
+
+                const chunkFormData = new FormData();
+                chunkFormData.append("Hash", hash);
+                chunkFormData.append("FileName", file.name);
+                chunkFormData.append("Chunk", chunk);
+                chunkFormData.append("Index", i);
+                chunkFormData.append("TotalChunks", chunks);
+
+                await fetch('/videoeditor/upload-chunk', {
+                    method: 'POST',
+                    body: chunkFormData
+                });
+
+                // Update progress bar
+                progressBarFill.style.width = `${((i + 1) / chunks) * 100}%`;
+                showStatus(`Uploading: ${Math.round(((i + 1) / chunks) * 100)}%`, 'success');
+            }
+
+            // Combine chunks
+            showStatus('Combining chunks...', 'success');
+            const combineFormData = new FormData();
+            combineFormData.append("FileName", file.name);
+            combineFormData.append("NoOfChunks", chunks);
+            combineFormData.append("Hash", hash);
+            combineFormData.append("NewFileName", `${fileNameWithoutExt}_edited.${newExtension}`);
+
+            await fetch('/videoeditor/combine', {
+                method: 'POST',
+                body: combineFormData
+            });
+
+            // Process video
+            showStatus('Processing video...', 'success');
+            const processFormData = new FormData();
+            processFormData.append("Hash", hash);
+            processFormData.append("FileName", file.name);
+            processFormData.append("NewFileName", `${fileNameWithoutExt}_edited.${newExtension}`);
+            processFormData.append("extension", newExtension);
+            processFormData.append("codec", document.getElementById('codec').value);
+            processFormData.append("crop", document.getElementById('crop').value);
+            processFormData.append("trimStart", document.getElementById('trimStart').value);
+            processFormData.append("trimEnd", document.getElementById('trimEnd').value);
+            processFormData.append("resolution", document.getElementById('resolution').value);
+            processFormData.append("fps", document.getElementById('fps').value);
+
+            await fetch('/videoeditor/process', {
+                method: 'POST',
+                body: processFormData
+            });
+
+            // Check processing status
+            let done = false;
+            while (!done) {
+                const response = await fetch(`/videoeditor/status/${hash}`);
+                const data = await response.json();
+
+                if (data.done !== false) {
+                    done = true;
+                    const numParts = data.done;
+                    showStatus('Processing complete! Ready for download.', 'success');
+
+                    const downloadArea = document.getElementById('downloadArea');
+                    const downloadFileName = `${fileNameWithoutExt}_edited.${newExtension}`;
+
+                    downloadArea.innerHTML = `
+                        <button onclick="downloadAllParts('${hash}', ${numParts}, '${downloadFileName}')"
+                                class="download-button">
+                            Download Processed Video
+                        </button>`;
+                    break;
+                }
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+        } catch (error) {
+            console.error("Error:", error);
+            showStatus('An error occurred during processing. Please try again.', 'error');
+            processButton.disabled = false;
+        }
+    }
+
+    async function downloadAllParts(hash, numParts, fileName) {
+        const statusMessage = document.getElementById('statusMessage');
+
+        try {
+            const blobs = [];
+
+            // Download each part
+            for (let i = 0; i < numParts; i++) {
+                showStatus(`Downloading part ${i + 1} of ${numParts}...`, 'success');
+
+                const response = await fetch(`/videoeditor/downloads/${hash}/${i}`);
+                if (!response.ok) throw new Error(`Failed to download part ${i}`);
+
+                const blob = await response.blob();
+                blobs.push(blob);
+            }
+
+            // Combine all blobs
+            showStatus('Preparing download...', 'success');
+            const finalBlob = new Blob(blobs, {type: 'video/mp4'});
+
+            // Create download link
+            const url = URL.createObjectURL(finalBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showStatus('Download complete!', 'success');
+
+        } catch (error) {
+            console.error('Download failed:', error);
+            showStatus('Download failed. Please try again.', 'error');
+        }
+    }
+
+    async function calculateHash(file) {
+        const buffer = await file.arrayBuffer();
+        const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function showStatus(message, type) {
+        const statusMessage = document.getElementById('statusMessage');
+        statusMessage.textContent = message;
+        statusMessage.className = 'status-message ' + (type === 'error' ? 'error-message' : 'success-message');
+    }
+</script>
+</body>
+</html>
