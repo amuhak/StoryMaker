@@ -745,7 +745,7 @@ background-color: var(--dl-color-theme-primary2);
                 }
 
                 const summaryText = await response.text(); // Get the response as plain text
-
+                console.log('Summary:', summaryText);
                 const summaryTextElement = document.getElementById('summaryText');
                 summaryTextElement.textContent = summaryText; // Set the text directly
 
@@ -784,7 +784,7 @@ background-color: var(--dl-color-theme-primary2);
                 console.error('Failed to leave queue:', error);
             }
         }
-
+/*
         async submitWord() {
             const word = this.elements.wordInput.value;
             try {
@@ -797,7 +797,7 @@ background-color: var(--dl-color-theme-primary2);
                 console.error('Failed to submit word:', error);
             }
         }
-
+*/
         async checkPosition() {
             if (!this.password) return;
 
