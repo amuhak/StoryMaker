@@ -585,6 +585,10 @@ background-color: var(--dl-color-theme-primary2);
 
 <div class="container">
     <div class="left-column">
+        <div class="summary-container">
+            <h3>Summary</h3>
+            <div id="summaryText" class="summary-text"></div>
+        </div>
         <div class="game-history">
             <h3>Game History</h3>
             <div id="gameHistory"></div>
@@ -596,11 +600,8 @@ background-color: var(--dl-color-theme-primary2);
             <button id="joinButton" class="button">Join Queue</button>
             <button id="leaveButton" class="button hidden">Leave Queue</button>
 
-            <div id="wordInputContainer" class="hidden">  <input type="text"
-                        id="wordInput"
-                        class="word-input"
-                        placeholder="Enter your word"
-                        maxlength="100">
+            <div id="wordInputContainer" class="hidden">
+                <input type="text" id="wordInput" class="word-input" placeholder="Enter your word" maxlength="100">
                 <button id="submitWordButton" class="button">Submit Word</button>
             </div>
         </div>
@@ -645,11 +646,7 @@ background-color: var(--dl-color-theme-primary2);
             async summarizeStory() {
                 try {
                     const response = await fetch('/songmaker/queue/summary', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json' // Important for POST with JSON
-                        },
-                        body: JSON.stringify({ text: this.elements.gameHistory.textContent }) // Send the story text
+                        method: 'POST'
                     });
 
                     if (!response.ok) {
