@@ -5653,6 +5653,15 @@ header {
           </div>
         </testimonial17-wrapper>
         <contact10-wrapper class="contact10-wrapper">
+          
+
+          <div>
+            <h1>Inspirational Quote</h1>
+            <div id="quote">Loading...</div>
+            <img id="quoteImage" src="" alt="Motivational Image"/>
+          </div>
+
+
           <!--Contact10 component-->
           <div class="contact10-container1 thq-section-padding">
             <div class="contact10-max-width thq-section-max-width">
@@ -5737,6 +5746,7 @@ header {
           </div>
         </contact10-wrapper>
         <footer4-wrapper class="footer4-wrapper">
+
           <!--Footer4 component-->
           <footer class="footer4-footer7 thq-section-padding">
             <div class="footer4-max-width thq-section-max-width">
@@ -5825,8 +5835,29 @@ header {
       </div>
     </div>
     <script
+      
       defer=""
       src="https://unpkg.com/@teleporthq/teleport-custom-scripts"
-    ></script>
+    >
+  async function fetchQuote() {
+        try {
+            const response = await fetch('/quote/generate');
+            document.getElementById('quote').innerText = await response.text();
+        } catch (error) {
+            document.getElementById('quote').innerText = "Failed to load quote.";
+        }
+    }
+
+    function setRandomImage() {
+        const randomNumber = Math.floor(Math.random() * 10) + 1;
+        const imageName = `${randomNumber}.webp`;
+        document.getElementById('quoteImage').src = imageName;
+        console.log(`Image set to: ${imageName}`);
+    }
+
+    fetchQuote();
+    setRandomImage();
+
+  </script>
   </body>
 </html>

@@ -311,6 +311,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+async function fetchQuote() {
+        try {
+            const response = await fetch('/quote/generate');
+            document.getElementById('quote').innerText = await response.text();
+        } catch (error) {
+            document.getElementById('quote').innerText = "Failed to load quote.";
+        }
+    }
+
+    function setRandomImage() {
+        const randomNumber = Math.floor(Math.random() * 10) + 1;
+        const imageName = `${randomNumber}.webp`;
+        document.getElementById('quoteImage').src = imageName;
+        console.log(`Image set to: ${imageName}`);
+    }
+
+    fetchQuote();
+    setRandomImage();
     </script>
 </body>
 </html>
