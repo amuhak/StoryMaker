@@ -52,6 +52,12 @@ public class MainController {
         return "videoeditor";
     }
 
+    @GetMapping("/quote")
+    public String quote() {
+        logger.info("User accessed the quote page");
+        return "quote";
+    }
+
     @GetMapping("/data")
     public ResponseEntity<String> getData() {
         logger.info("User accessed the data page");

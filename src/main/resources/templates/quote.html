@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motivational Quote</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f4f4f4;
+        }
+        #quote {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        img {
+            width: 300px;
+            height: auto;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Inspirational Quote</h1>
+<div id="quote">Loading...</div>
+<img id="quoteImage" src="" alt="Motivational Image"/>
+
+<script>
+    async function fetchQuote() {
+        try {
+            const response = await fetch('/quote/generate');
+            document.getElementById('quote').innerText = await response.text();
+        } catch (error) {
+            document.getElementById('quote').innerText = "Failed to load quote.";
+        }
+    }
+
+    function setRandomImage() {
+        const randomNumber = Math.floor(Math.random() * 10) + 1;
+        const imageName = `${randomNumber}.webp`;
+        document.getElementById('quoteImage').src = imageName;
+        console.log(`Image set to: ${imageName}`);
+    }
+
+    fetchQuote();
+    setRandomImage();
+</script>
+</body>
+</html>
