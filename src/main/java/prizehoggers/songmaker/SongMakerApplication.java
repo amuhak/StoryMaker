@@ -33,6 +33,5 @@ public class SongMakerApplication {
             logger.error("Ollama API is not running");
         }
         SpringApplication.run(SongMakerApplication.class, args);
-        System.out.println(AiManager.generateMotivationalQuote());
     }
 }
